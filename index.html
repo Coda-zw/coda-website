@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coda | Architecting Digital Futures in Zimbabwe</title>
+<meta name="description" content="Premium AI-assisted web development for schools and SMEs in Zimbabwe.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ════════════════════════════════════════════════════════════════════
+   TOKENS — DARK & LIGHT
+═══════════════════════════════════════════════════════════════════ */
+:root {
+  --cyan:    #06b6d4;
+  --cyan-hi: #22d3ee;
+  --trans:   all 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="dark"] {
+  --bg:         #050505;
+  --surface:    #0a0a0a;
+  --card:       rgba(14,14,14,0.85);
+  --card-solid: #0e0e0e;
+  --border:     rgba(255,255,255,0.07);
+  --border-hi:  rgba(6,182,212,0.35);
+  --text:       #e2e2e2;
+  --text-dim:   rgba(255,255,255,0.42);
+  --text-muted: rgba(255,255,255,0.22);
+  --heading:    #ffffff;
+  --shadow:     rgba(0,0,0,0.6);
+  --orb1: rgba(6,182,212,0.12);
+  --orb2: rgba(34,211,238,0.06);
+  --nav-bg: rgba(5,5,5,0.88);
+  --toggle-bg: rgba(255,255,255,0.08);
+  --toggle-icon: #e2e2e2;
+}
+[data-theme="light"] {
+  --bg:         #f4f4f0;
+  --surface:    #ececea;
+  --card:       rgba(255,255,255,0.85);
+  --card-solid: #ffffff;
+  --border:     rgba(0,0,0,0.08);
+  --border-hi:  rgba(6,182,212,0.45);
+  --text:       #1a1a1a;
+  --text-dim:   rgba(0,0,0,0.5);
+  --text-muted: rgba(0,0,0,0.3);
+  --heading:    #050505;
+  --shadow:     rgba(0,0,0,0.12);
+  --orb1: rgba(6,182,212,0.1);
+  --orb2: rgba(34,211,238,0.07);
+  --nav-bg: rgba(244,244,240,0.92);
+  --toggle-bg: rgba(0,0,0,0.08);
+  --toggle-icon: #1a1a1a;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   GLOBAL THEME TRANSITION
+═══════════════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
+  transition: background-color 0.45s cubic-bezier(0.4,0,0.2,1),
+              border-color 0.45s cubic-bezier(0.4,0,0.2,1),
+              color 0.35s cubic-bezier(0.4,0,0.2,1),
+              box-shadow 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ════════════════════════════════════════════════════════════════════
+   TYPOGRAPHY
+═══════════════════════════════════════════════════════════════════ */
+.label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--cyan); display: inline-block; margin-bottom: 1rem;
+}
+.text-grad {
+  background: linear-gradient(130deg, var(--heading) 15%, var(--cyan-hi) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════════════════════════ */
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.section { padding: 7rem 2rem; position: relative; overflow: hidden; }
+.section-head { margin-bottom: 3.5rem; }
+.section-head h2 { font-size: clamp(1.9rem,3.5vw,2.9rem); font-weight: 700; line-height: 1.12; color: var(--heading); }
+
+/* ════════════════════════════════════════════════════════════════════
+   GLASS
+═══════════════════════════════════════════════════════════════════ */
+.glass {
+  background: var(--card);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--border);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 1.8rem; border-radius: 12px;
+  font-weight: 600; font-size: 0.875rem; cursor: pointer;
+  border: none; font-family: 'Outfit', sans-serif;
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1),
+              box-shadow 0.25s cubic-bezier(0.4,0,0.2,1),
+              background 0.25s, color 0.25s;
+}
+.btn-primary { background: var(--cyan); color: #050505; }
+.btn-primary:hover { background: var(--cyan-hi); transform: translateY(-2px) scale(1.02); box-shadow: 0 0 32px rgba(6,182,212,0.45); }
+.btn-ghost { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: rgba(6,182,212,0.4); color: var(--cyan-hi); transform: translateY(-1px); }
+
+/* ════════════════════════════════════════════════════════════════════
+   SCROLL REVEAL SYSTEM
+═══════════════════════════════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1),
+              transform 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+.reveal.up      { transform: translateY(40px); }
+.reveal.left    { transform: translateX(-50px); }
+.reveal.right   { transform: translateX(50px); }
+.reveal.scale   { transform: scale(0.88); }
+.reveal.visible { opacity: 1 !important; transform: none !important; }
+.d1 { transition-delay: 0.08s; }
+.d2 { transition-delay: 0.16s; }
+.d3 { transition-delay: 0.24s; }
+.d4 { transition-delay: 0.32s; }
+
+/* ════════════════════════════════════════════════════════════════════
+   SECTION DIVIDERS — seamless wave transitions
+═══════════════════════════════════════════════════════════════════ */
+.wave-bottom {
+  position: absolute; bottom: -1px; left: 0; right: 0;
+  overflow: hidden; line-height: 0; z-index: 2;
+}
+.wave-bottom svg { display: block; width: 100%; height: 60px; }
+.wave-top {
+  position: absolute; top: -1px; left: 0; right: 0;
+  overflow: hidden; line-height: 0; z-index: 2;
+  transform: rotate(180deg);
+}
+.wave-top svg { display: block; width: 100%; height: 60px; }
+
+/* ════════════════════════════════════════════════════════════════════
+   3D FLOATING ORBS — HERO BACKGROUND
+═══════════════════════════════════════════════════════════════════ */
+.orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(80px); pointer-events: none; z-index: 0;
+  transition: background 0.45s;
+}
+.orb-1 {
+  width: 500px; height: 500px;
+  background: var(--orb1);
+  top: -100px; left: -100px;
+  animation: float1 12s ease-in-out infinite;
+}
+.orb-2 {
+  width: 400px; height: 400px;
+  background: var(--orb2);
+  bottom: 0; right: -80px;
+  animation: float2 16s ease-in-out infinite;
+}
+.orb-3 {
+  width: 300px; height: 300px;
+  background: var(--orb1);
+  top: 40%; left: 60%;
+  animation: float3 10s ease-in-out infinite;
+}
+@keyframes float1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%     { transform: translate(40px,-30px) scale(1.08); }
+  66%     { transform: translate(-20px,20px) scale(0.95); }
+}
+@keyframes float2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%     { transform: translate(-50px,-40px) scale(1.1); }
+}
+@keyframes float3 {
+  0%,100% { transform: translate(0,0); }
+  50%     { transform: translate(30px,50px); }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   3D GRID — hero depth element
+═══════════════════════════════════════════════════════════════════ */
+.hero-grid {
+  position: absolute; inset: 0; z-index: 0; overflow: hidden;
+  perspective: 800px;
+}
+.hero-grid-inner {
+  position: absolute; inset: -50%;
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: rotateX(55deg) translateY(20%);
+  animation: gridDrift 20s linear infinite;
+  opacity: 0.5;
+}
+@keyframes gridDrift { from { transform: rotateX(55deg) translateY(20%); } to { transform: rotateX(55deg) translateY(calc(20% + 60px)); } }
+
+/* ════════════════════════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════════════════════ */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  padding: 0 2rem;
+}
+.nav-glass {
+  position: absolute; inset: 0;
+  background: var(--nav-bg);
+  backdrop-filter: blur(24px) saturate(160%);
+  border-bottom: 2px solid var(--border);
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+#nav.scrolled .nav-glass { opacity: 1; }
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px;
+}
+.nav-logo {
+  height: 70px; width: auto;
+  filter: drop-shadow(0 0 10px rgba(6,182,212,0.2));
+  transition: filter 0.3s, transform 0.3s;
+}
+.nav-logo:hover { filter: drop-shadow(0 0 20px rgba(6,182,212,0.5)); transform: scale(1.04); }
+.nav-right { display: flex; align-items: center; gap: 2rem; }
+.nav-links {
+  display: flex; align-items: center; gap: 2.25rem;
+  font-family: 'Geist Mono', monospace; font-size: 0.62rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim);
+}
+
+.nav-links a { transition: color 0.25s; }
+.nav-links a:hover { color: var(--cyan-hi); }
+.nav-cta {
+  padding: 0.45rem 1.2rem;
+  border: 1px solid rgba(6,182,212,0.3); border-radius: 100px;
+  color: var(--cyan-hi) !important;
+}
+.nav-cta:hover { background: var(--cyan) !important; color: #050505 !important; border-color: var(--cyan) !important; }
+
+/* Theme toggle */
+#theme-toggle {
+  width: 40px; height: 40px;
+  background: var(--toggle-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--toggle-icon);
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+#theme-toggle:hover { border-color: var(--cyan); color: var(--cyan); transform: rotate(15deg); }
+
+/* ════════════════════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════════════════ */
+#hero {
+  min-height: 100svh;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  padding: 9rem 2rem 7rem;
+  background: var(--bg);
+}
+#hero-photo {
+  position: absolute; inset: 0; z-index: 1;
+}
+#hero-photo video { filter: blur(0.3px) saturate(115%); }
+#hero-photo video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.18;
+  transform: scale(1.05);
+  transition: transform 8s ease-out;
+}
+#hero-photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, var(--bg) 0%, transparent 30%, var(--bg) 100%);
+}
+.hero-content {
+  position: relative; z-index: 3;
+  max-width: 1200px; margin: 0 auto; width: 100%;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.65rem;
+  padding: 0.35rem 1rem;
+  border: 1px solid rgba(6,182,212,0.3); background: rgba(6,182,212,0.07);
+  border-radius: 100px;
+  font-family: 'Geist Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--cyan-hi); margin-bottom: 2.25rem;
+  opacity: 0; animation: fu 0.8s 0.3s forwards;
+}
+.ping { position: relative; width: 8px; height: 8px; flex-shrink: 0; }
+.ping span {
+  position: absolute; inset: 0; border-radius: 50%; background: var(--cyan);
+}
+.ping span:first-child { animation: ping 1.6s infinite; opacity: 0.6; }
+@keyframes ping { 0%{transform:scale(1);opacity:.6} 100%{transform:scale(2.6);opacity:0} }
+
+/* Staggered headline */
+.hero-h1 {
+  font-size: clamp(3.5rem, 9vw, 7.5rem);
+  font-weight: 800; line-height: 1; letter-spacing: -0.03em;
+  margin-bottom: 1.75rem; color: var(--heading);
+  overflow: hidden;
+}
+.hero-line {
+  display: block; overflow: hidden;
+}
+.hero-line span {
+  display: block;
+  opacity: 0;
+  animation: slideUp 0.9s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+.hero-line:nth-child(1) span { animation-delay: 0.4s; }
+.hero-line:nth-child(2) span { animation-delay: 0.6s; }
+@keyframes slideUp { from{opacity:0;transform:translateY(100%)} to{opacity:1;transform:translateY(0)} }
+
+.hero-sub {
+  max-width: 560px; font-size: 1.05rem; font-weight: 300;
+  color: var(--text-dim); line-height: 1.78; margin-bottom: 2.5rem;
+  opacity: 0; animation: fu 0.9s 0.9s forwards;
+}
+.hero-btns {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  opacity: 0; animation: fu 0.9s 1.1s forwards;
+}
+@keyframes fu { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+.hero-stats {
+  display: flex; gap: 0; margin-top: 4rem;
+  opacity: 0; animation: fu 0.9s 1.3s forwards;
+}
+.hero-stat {
+  padding: 0 2.5rem; text-align: center;
+  border-right: 1px solid var(--border);
+}
+.hero-stat:first-child { padding-left: 0; }
+.hero-stat:last-child { border-right: none; }
+.hero-stat-n { font-size: 2rem; font-weight: 800; color: var(--heading); line-height: 1; }
+.hero-stat-l { font-family:'Geist Mono',monospace; font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); margin-top:0.3rem; }
+
+/* ════════════════════════════════════════════════════════════════════
+   3D CARD SYSTEM (mouse-tracked tilt)
+═══════════════════════════════════════════════════════════════════ */
+.card-3d {
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  transition: transform 0.15s ease-out, box-shadow 0.3s, border-color 0.3s;
+  will-change: transform;
+  cursor: default;
+}
+.card-3d-inner {
+  transform: translateZ(0px);
+  transition: transform 0.15s ease-out;
+}
+.card-3d:hover .card-3d-inner { transform: translateZ(8px); }
+.card-3d-shine {
+  position: absolute; inset: 0; border-radius: inherit;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 0%, transparent 60%);
+  opacity: 0; pointer-events: none; z-index: 10;
+  transition: opacity 0.3s;
+}
+.card-3d:hover .card-3d-shine { opacity: 1; }
+
+/* ════════════════════════════════════════════════════════════════════
+   FOUNDER
+═══════════════════════════════════════════════════════════════════ */
+#founder { background: var(--surface); }
+.founder-grid {
+  display: grid; grid-template-columns: 1fr 1.15fr;
+  gap: 5rem; align-items: center;
+}
+.founder-img-wrap { position: relative; }
+.founder-frame {
+  border-radius: 24px; overflow: hidden; aspect-ratio: 4/5;
+  position: relative;
+  box-shadow: 0 40px 80px var(--shadow), 0 0 0 1px var(--border);
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.3s;
+}
+.founder-frame img { width:100%; height:100%; object-fit:cover; transition: transform 0.6s; }
+.founder-frame:hover img { transform: scale(1.04); }
+.founder-frame::after {
+  content:''; position:absolute; inset:0;
+  border: 1px solid rgba(6,182,212,0.2); border-radius: 24px; pointer-events: none; z-index: 2;
+}
+/* 3D glint layer */
+.founder-glint {
+  position: absolute; inset: 0; border-radius: 24px; z-index: 3;
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.12) 0%, transparent 50%);
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.founder-frame:hover .founder-glint { opacity: 1; }
+.founder-chip {
+  position: absolute; bottom: -1.25rem; right: -1.25rem;
+  background: var(--cyan); color: #050505;
+  padding: 1.1rem 1.4rem; border-radius: 16px;
+  font-family:'Geist Mono',monospace; font-size:0.6rem;
+  font-weight:700; letter-spacing:0.1em; text-transform:uppercase; line-height:1.7;
+  box-shadow: 0 8px 24px rgba(6,182,212,0.3);
+  z-index: 4;
+}
+.founder-name { font-size:2.1rem; font-weight:700; line-height:1.2; margin-bottom:0.4rem; color:var(--heading); }
+.founder-role { font-family:'Geist Mono',monospace; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan); margin-bottom:2rem; }
+.founder-quote {
+  font-family:'DM Serif Display',serif; font-style:italic;
+  font-size:1.35rem; color:var(--text-dim); line-height:1.6;
+  border-left:2px solid var(--cyan); padding-left:1.4rem; margin-bottom:1.75rem;
+}
+.founder-bio { font-size:0.9rem; color:var(--text-dim); line-height:1.85; margin-bottom:2rem; }
+.socials { display:flex; gap:0.75rem; }
+.social-btn {
+  width:40px; height:40px; border:1px solid var(--border);
+  border-radius:10px; display:flex; align-items:center; justify-content:center;
+  color:var(--text-muted); font-size:0.9rem;
+}
+.social-btn:hover { border-color:var(--cyan); color:var(--cyan); transform:translateY(-3px); }
+
+/* ════════════════════════════════════════════════════════════════════
+   TRUSTED
+═══════════════════════════════════════════════════════════════════ */
+#trusted { padding: 3.5rem 2rem; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--bg); }
+.trusted-label { text-align:center; font-family:'Geist Mono',monospace; font-size:0.58rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--text-muted); margin-bottom:2rem; }
+.trusted-logos { max-width:900px; margin:0 auto; display:flex; gap:1.25rem; justify-content:center; flex-wrap:wrap; }
+.trusted-item {
+  display:flex; align-items:center; justify-content:center;
+  padding:0.85rem 1.5rem; border:1px solid var(--border); border-radius:12px;
+  font-family:'Geist Mono',monospace; font-size:0.62rem; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text-muted);
+  opacity:0.5; transition: all 0.3s;
+}
+.trusted-item:hover { opacity:1; border-color:var(--border-hi); color:var(--cyan); }
+
+/* ════════════════════════════════════════════════════════════════════
+   PROCESS
+═══════════════════════════════════════════════════════════════════ */
+#process { background: var(--bg); }
+.process-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; }
+.process-card {
+  padding:2.25rem 1.75rem; border-radius:20px;
+  border:1px solid var(--border); background:var(--card);
+  position:relative; overflow:hidden;
+}
+.process-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity:0; transition:opacity 0.4s;
+}
+.process-card:hover { border-color:var(--border-hi); }
+.process-card:hover::before { opacity:1; }
+.process-num { font-family:'Geist Mono',monospace; font-size:0.58rem; letter-spacing:0.2em; color:var(--text-muted); margin-bottom:1.5rem; }
+.process-icon {
+  width:42px; height:42px; background:rgba(6,182,212,0.1);
+  border-radius:12px; display:flex; align-items:center; justify-content:center;
+  color:var(--cyan); font-size:1rem; margin-bottom:1.25rem;
+}
+.process-card h3 { font-size:1rem; font-weight:700; margin-bottom:0.5rem; color:var(--heading); }
+.process-card p { font-size:0.82rem; color:var(--text-dim); line-height:1.7; }
+
+/* ════════════════════════════════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════════════════════════════ */
+#services { background:var(--surface); }
+.services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; }
+.svc-card {
+  padding:2.5rem; border-radius:24px;
+  border:1px solid var(--border); background:var(--card);
+  position:relative; overflow:hidden;
+}
+.svc-bar {
+  position:absolute; bottom:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, var(--cyan), var(--cyan-hi));
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.svc-card:hover { border-color:var(--border-hi); }
+.svc-card:hover .svc-bar { transform:scaleX(1); }
+.svc-icon {
+  width:50px; height:50px; background:rgba(6,182,212,0.1);
+  border-radius:14px; display:flex; align-items:center; justify-content:center;
+  color:var(--cyan); font-size:1.25rem; margin-bottom:1.75rem;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.svc-card:hover .svc-icon { transform: scale(1.15) rotate(5deg); }
+.svc-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:0.65rem; color:var(--heading); }
+.svc-card p { font-size:0.85rem; color:var(--text-dim); line-height:1.75; margin-bottom:1.5rem; }
+.svc-features { list-style:none; display:flex; flex-direction:column; gap:0.5rem; }
+.svc-features li {
+  font-size:0.78rem; color:var(--text-muted);
+  display:flex; align-items:center; gap:0.5rem; transition:color 0.3s;
+}
+.svc-card:hover .svc-features li { color:rgba(34,211,238,0.7); }
+.svc-features li::before { content:''; width:4px; height:4px; background:var(--cyan); border-radius:50%; flex-shrink:0; }
+
+/* ════════════════════════════════════════════════════════════════════
+   STACK
+═══════════════════════════════════════════════════════════════════ */
+#stack { background:var(--bg); }
+.stack-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; }
+.stack-card {
+  padding:2rem; border-radius:20px;
+  border:1px solid var(--border); background:var(--card);
+}
+.stack-card:hover { border-color:var(--border-hi); }
+.stack-card h3 { font-size:0.78rem; font-weight:600; display:flex; align-items:center; gap:0.45rem; margin-bottom:1.25rem; color:var(--heading); }
+.stack-card h3 i { color:var(--cyan); }
+.stack-icons { display:flex; flex-wrap:wrap; gap:1rem; font-size:1.45rem; color:var(--text-muted); }
+.stack-icons i { transition:color 0.3s, transform 0.3s; }
+.stack-icons i:hover { transform: translateY(-3px) scale(1.2); }
+.stack-tags { display:flex; flex-wrap:wrap; gap:0.4rem; }
+.stack-tag {
+  font-family:'Geist Mono',monospace; font-size:0.58rem;
+  padding:0.3rem 0.6rem;
+  background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.2);
+  border-radius:6px; color:var(--cyan-hi); letter-spacing:0.05em;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   WORKS
+═══════════════════════════════════════════════════════════════════ */
+#works { background:var(--surface); }
+.works-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.75rem; }
+.work-card {
+  border-radius:24px; overflow:hidden;
+  border:1px solid var(--border); background:var(--card);
+  cursor:pointer;
+}
+.work-card:hover { border-color:var(--border-hi); }
+.work-img { overflow:hidden; height:270px; position:relative; }
+.work-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.8s cubic-bezier(0.4,0,0.2,1); }
+.work-card:hover .work-img img { transform:scale(1.07); }
+.work-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+  opacity:0; transition:opacity 0.4s;
+  display:flex; align-items:flex-end; padding:1.25rem;
+}
+.work-card:hover .work-overlay { opacity:1; }
+.work-overlay-label { font-family:'Geist Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan-hi); }
+.work-info { padding:1.5rem 2rem; display:flex; align-items:center; justify-content:space-between; }
+.work-info h3 { font-size:1.05rem; font-weight:700; color:var(--heading); }
+.work-info p { font-size:0.78rem; color:var(--text-dim); margin-top:0.2rem; }
+.work-arrow {
+  width:36px; height:36px; border:1px solid var(--border);
+  border-radius:10px; display:flex; align-items:center; justify-content:center;
+  color:var(--text-muted); flex-shrink:0; transition:all 0.3s;
+}
+.work-card:hover .work-arrow { background:var(--cyan); border-color:var(--cyan); color:#050505; transform: rotate(45deg); }
+
+/* ════════════════════════════════════════════════════════════════════
+   PRICING
+═══════════════════════════════════════════════════════════════════ */
+#pricing {
+  background:var(--bg);
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size:40px 40px;
+}
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; align-items:start; }
+.pricing-card {
+  padding:2.5rem; border-radius:24px;
+  border:1px solid var(--border); background:var(--card-solid);
+  position:relative;
+}
+.pricing-card.feat {
+  border-color:rgba(6,182,212,0.45);
+  background:var(--card-solid);
+  box-shadow:0 0 0 1px rgba(6,182,212,0.2), 0 0 80px rgba(6,182,212,0.08);
+}
+.pricing-badge {
+  position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+  background:var(--cyan); color:#050505;
+  padding:0.22rem 1rem; border-radius:100px;
+  font-family:'Geist Mono',monospace; font-size:0.58rem; font-weight:700;
+  letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap;
+}
+.pricing-tier { font-family:'Geist Mono',monospace; font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan); margin-bottom:0.8rem; }
+.pricing-price { font-size:2.8rem; font-weight:800; line-height:1; margin-bottom:0.3rem; color:var(--heading); }
+.pricing-price span { font-size:0.9rem; font-weight:400; color:var(--text-dim); }
+.pricing-desc { font-size:0.82rem; color:var(--text-dim); line-height:1.65; margin-bottom:1.75rem; padding-bottom:1.75rem; border-bottom:1px solid var(--border); }
+.pricing-features { list-style:none; display:flex; flex-direction:column; gap:0.7rem; margin-bottom:2rem; }
+.pricing-features li { font-size:0.83rem; color:var(--text-dim); display:flex; align-items:center; gap:0.6rem; }
+.pricing-features li i { color:var(--cyan); font-size:0.68rem; }
+.btn-plan {
+  width:100%; padding:0.875rem; border-radius:12px;
+  font-weight:600; font-size:0.875rem; cursor:pointer; border:none;
+  font-family:'Outfit',sans-serif;
+}
+.btn-plan.outline { background:transparent; border:1px solid var(--border); color:var(--text-dim); }
+.btn-plan.outline:hover { border-color:rgba(6,182,212,0.4); color:var(--cyan-hi); }
+.btn-plan.solid { background:var(--cyan); color:#050505; }
+.btn-plan.solid:hover { background:var(--cyan-hi); box-shadow:0 0 24px rgba(6,182,212,0.4); transform:translateY(-2px); }
+
+/* ════════════════════════════════════════════════════════════════════
+   MISSION
+═══════════════════════════════════════════════════════════════════ */
+#mission { background:var(--surface); text-align:center; }
+.mission-wrap { max-width:720px; margin:0 auto; }
+.mission-quote {
+  font-family:'DM Serif Display',serif; font-style:italic;
+  font-size:clamp(1.5rem,3.2vw,2.2rem);
+  color:var(--text-dim); line-height:1.5; margin-bottom:1.75rem;
+}
+.mission-body { font-size:0.95rem; color:var(--text-muted); line-height:1.9; }
+
+/* ════════════════════════════════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════════════════════════════ */
+#contact { background:var(--bg); text-align:center; }
+.contact-wrap { max-width:600px; margin:0 auto; }
+.contact-wrap h2 { font-size:clamp(1.9rem,3.5vw,2.9rem); font-weight:700; margin-bottom:1rem; color:var(--heading); }
+.contact-wrap p { font-size:0.93rem; color:var(--text-dim); line-height:1.8; margin-bottom:2.5rem; }
+.contact-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+
+/* ════════════════════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════════════════ */
+footer { background:var(--surface); padding:5rem 2rem 2.5rem; border-top:1px solid var(--border); }
+.footer-inner { max-width:1200px; margin:0 auto; }
+.footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:4rem; margin-bottom:4rem; }
+.footer-brand { font-family:'Geist Mono',monospace; font-size:1.1rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1rem; color:var(--heading); }
+.footer-bio { font-size:0.83rem; color:var(--text-muted); line-height:1.85; max-width:300px; margin-bottom:1.5rem; }
+.footer-socials { display:flex; gap:0.65rem; }
+.fsoc {
+  width:36px; height:36px; border:1px solid var(--border);
+  border-radius:9px; display:flex; align-items:center; justify-content:center;
+  color:var(--text-muted); font-size:0.82rem;
+}
+.fsoc:hover { border-color:var(--cyan); color:var(--cyan); }
+.footer-col h5 { font-size:0.78rem; font-weight:600; margin-bottom:1.25rem; color:var(--heading); }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:0.7rem; }
+.footer-col ul a { font-size:0.8rem; color:var(--text-muted); }
+.footer-col ul a:hover { color:var(--cyan-hi); }
+.footer-bottom {
+  padding-top:2rem; border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  font-family:'Geist Mono',monospace; font-size:0.58rem;
+  letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   CHATBOT
+═══════════════════════════════════════════════════════════════════ */
+#chat-fab {
+  position:fixed; bottom:2rem; right:2rem; z-index:600;
+  width:52px; height:52px; background:white; color:#050505;
+  border:none; border-radius:50%; font-size:1.1rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 8px 32px rgba(0,0,0,0.35);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
+}
+#chat-fab:hover { transform:scale(1.12); box-shadow:0 12px 40px rgba(0,0,0,0.4); }
+#chat-fab:active { transform:scale(0.95); }
+#chatbox {
+  position:fixed; bottom:5.75rem; right:2rem; z-index:600;
+  width:min(370px,calc(100vw - 2.5rem));
+  border-radius:20px; overflow:hidden;
+  box-shadow:0 24px 80px var(--shadow);
+  border:1px solid var(--border);
+  background:var(--card-solid);
+  display:none; flex-direction:column;
+}
+#chatbox.open {
+  display:flex;
+  animation:chatpop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+@keyframes chatpop { from{opacity:0;transform:scale(0.85) translateY(16px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.chat-head { padding:1.1rem 1.4rem; background:rgba(6,182,212,0.08); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:0.75rem; }
+.chat-avatar { width:34px; height:34px; background:var(--cyan); border-radius:10px; display:flex; align-items:center; justify-content:center; color:#050505; font-size:0.82rem; }
+.chat-head-text h3 { font-size:0.83rem; font-weight:600; color:var(--heading); }
+.chat-head-text p { font-family:'Geist Mono',monospace; font-size:0.54rem; letter-spacing:0.1em; color:var(--cyan); text-transform:uppercase; }
+#chat-msgs { height:290px; overflow-y:auto; padding:1.1rem; display:flex; flex-direction:column; gap:0.7rem; font-size:0.8rem; }
+#chat-msgs::-webkit-scrollbar { width:3px; }
+#chat-msgs::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.cmsg { display:flex; flex-direction:column; gap:0.18rem; max-width:85%; }
+.cmsg.ai { align-self:flex-start; }
+.cmsg.user { align-self:flex-end; }
+.cmsg .csender { font-family:'Geist Mono',monospace; font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; }
+.cmsg.ai .csender { color:var(--cyan); }
+.cmsg.user .csender { color:var(--text-muted); text-align:right; }
+.cbubble { padding:0.65rem 0.9rem; border-radius:12px; line-height:1.65; color:var(--text); }
+.cmsg.ai .cbubble { background:var(--card); border:1px solid var(--border); }
+.cmsg.user .cbubble { background:rgba(6,182,212,0.12); border:1px solid rgba(6,182,212,0.25); }
+.chat-foot { padding:0.9rem; background:var(--card); border-top:1px solid var(--border); display:flex; gap:0.5rem; }
+#chat-input {
+  flex:1; background:var(--bg); border:1px solid var(--border);
+  border-radius:10px; padding:0.6rem 0.85rem; color:var(--text);
+  font-size:0.8rem; font-family:'Outfit',sans-serif; outline:none;
+}
+#chat-input:focus { border-color:rgba(6,182,212,0.4); }
+#chat-send {
+  width:36px; height:36px; background:var(--cyan); border:none;
+  border-radius:10px; color:#050505; font-size:0.78rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+#chat-send:hover { background:var(--cyan-hi); }
+
+/* ════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width:960px) {
+  .founder-grid { grid-template-columns:1fr; gap:3rem; }
+  .founder-chip { right:0; bottom:-1rem; }
+  .process-grid { grid-template-columns:1fr 1fr; }
+  .services-grid { grid-template-columns:1fr; }
+  .stack-grid { grid-template-columns:1fr 1fr; }
+  .works-grid { grid-template-columns:1fr; }
+  .pricing-grid { grid-template-columns:1fr; }
+  .footer-grid { grid-template-columns:1fr; gap:2.5rem; }
+}
+@media (max-width:600px) {
+  .process-grid { grid-template-columns:1fr; }
+  .stack-grid { grid-template-columns:1fr; }
+  .nav-links a:not(.nav-cta) { display:none; }
+  .hero-stats { flex-wrap:wrap; gap:1rem; }
+  .hero-stat { border-right:none; padding:0.5rem 1.5rem; border:1px solid var(--border); border-radius:12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ═══════════════════════════════════════════════════════════ -->
+<nav id="nav">
+  <div class="nav-glass"></div>
+  <div class="nav-inner">
+    <img src="images/logo.png" class="nav-logo" alt="Coda">
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="#founder">Story</a>
+        <a href="#process">Process</a>
+        <a href="#services">Solutions</a>
+        <a href="#works">Work</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact" class="nav-cta">Contact</a>
+      </div>
+      <button id="theme-toggle" title="Toggle theme">
+        <i class="fas fa-moon" id="theme-icon"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-grid"><div class="hero-grid-inner"></div></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div id="hero-photo" aria-hidden="true">
+  <video
+    id="hero-video"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+  >
+    <source src="images/Flow - 26 Apr, 14-03_5.mp4" type="video/mp4">
+    <!-- Optional fallback text -->
+  </video>
+</div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="ping"><span></span><span></span></div>
+      Available for new projects · Harare, Zimbabwe
+    </div>
+    <h1 class="hero-h1">
+      <span class="hero-line"><span class="text-grad">Your Vision,</span></span>
+      <span class="hero-line"><span>Online.</span></span>
+    </h1>
+    <p class="hero-sub">Empowering Zimbabwe's schools and businesses to grow — through smart, modern digital solutions built on real expertise and genuine care.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn btn-primary"><i class="fas fa-arrow-right" style="font-size:0.75rem;"></i> Start Your Project</a>
+      <a href="#works" class="btn btn-ghost"><i class="fas fa-play" style="font-size:0.65rem;"></i> See Our Work</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-n">3+</div>
+        <div class="hero-stat-l">Projects Live</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n">100%</div>
+        <div class="hero-stat-l">Client Focused</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n">ZW</div>
+        <div class="hero-stat-l">Based & Proud</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOUNDER ════════════════════════════════════════════════════════ -->
+<section id="founder" class="section">
+  <div class="wrap">
+    <div class="founder-grid">
+      <div class="founder-img-wrap reveal left">
+        <div class="founder-frame" id="founder-frame">
+          <img src="images/Role_&_Expertise__202604272021.jpeg" alt="Tinevimbonashe Vitalis Jera">
+          <div class="founder-glint"></div>
+        </div>
+        <div class="founder-chip">Founder &<br>Lead Architect</div>
+      </div>
+      <div class="founder-text reveal right d1">
+        <span class="label">The Person Behind Coda</span>
+        <h2 class="founder-name">Tinevimbonashe<br>Vitalis Jera</h2>
+        <p class="founder-role">Founder & Digital Architect</p>
+        <blockquote class="founder-quote">
+          "In an era of rapid AI evolution, my goal is to ensure Zimbabwean schools and SMEs aren't just participants in the digital economy — but leaders."
+        </blockquote>
+        <p class="founder-bio">I started Coda because I saw a gap — world-class digital tools existed, but felt out of reach for local institutions. I'm on a mission to change that: building with care, precision, and a genuine belief that Zimbabwe's digital future is worth investing in.</p>
+        <div class="socials">
+          <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TRUSTED ════════════════════════════════════════════════════════ -->
+<div id="trusted">
+  <p class="trusted-label">Empowering Excellence Across Zimbabwe</p>
+  <div class="trusted-logos">
+    <div class="trusted-item">Elevated Beyond Building Africa</div>
+    <div class="trusted-item">UZ Methosoc</div>
+    <div class="trusted-item">ZIMSEC</div>
+  </div>
+</div>
+
+<!-- ══ PROCESS ════════════════════════════════════════════════════════ -->
+<section id="process" class="section">
+  <div class="wrap">
+    <div class="section-head reveal up">
+      <span class="label">How We Work</span>
+      <h2>The Build With Me <span class="text-grad">Program.</span></h2>
+    </div>
+    <div class="process-grid">
+      <div class="process-card card-3d reveal up d1">
+        <div class="card-3d-shine"></div>
+        <div class="card-3d-inner">
+          <div class="process-num">01</div>
+          <div class="process-icon"><i class="fas fa-magnifying-glass"></i></div>
+          <h3>Discovery</h3>
+          <p>We start by listening. Understanding your goals, your users, and what success actually looks like for you.</p>
+        </div>
+      </div>
+      <div class="process-card card-3d reveal up d2">
+        <div class="card-3d-shine"></div>
+        <div class="card-3d-inner">
+          <div class="process-num">02</div>
+          <div class="process-icon"><i class="fas fa-microchip"></i></div>
+          <h3>AI-Augmented Build</h3>
+          <p>We build then leverage cutting-edge AI tools to move fast without cutting corners — production quality at startup speed.</p>
+        </div>
+      </div>
+      <div class="process-card card-3d reveal up d3">
+        <div class="card-3d-shine"></div>
+        <div class="card-3d-inner">
+          <div class="process-num">03</div>
+          <div class="process-icon"><i class="fas fa-users-gear"></i></div>
+          <h3>Co-Development</h3>
+          <p>You're in the room with us. Feedback loops, iterations, and full transparency every step of the way.</p>
+        </div>
+      </div>
+      <div class="process-card card-3d reveal up d4">
+        <div class="card-3d-shine"></div>
+        <div class="card-3d-inner">
+          <div class="process-num">04</div>
+          <div class="process-icon"><i class="fas fa-rocket"></i></div>
+          <h3>Launch & Handover</h3>
+          <p>A clean launch, thorough handover, and real ongoing support. We don't disappear after go-live.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ═══════════════════════════════════════════════════════ -->
+<section id="services" class="section">
+  <div class="wrap">
+    <div class="section-head reveal up">
+      <span class="label">What We Build</span>
+      <h2>End-to-End <span class="text-grad">Solutions.</span></h2>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card card-3d reveal up d1">
+        <div class="card-3d-shine"></div>
+        <div class="svc-bar"></div>
+        <div class="card-3d-inner">
+          <div class="svc-icon"><i class="fas fa-graduation-cap"></i></div>
+          <h3>Institutional Portals</h3>
+          <p>Comprehensive school systems connecting parents, teachers, and students in one seamless hub.</p>
+          <ul class="svc-features">
+            <li>Parent-Teacher Communication Hub</li>
+            <li>LMS Integration</li>
+            <li>Student Performance Dashboards</li>
+          </ul>
+        </div>
+      </div>
+      <div class="svc-card card-3d reveal up d2">
+        <div class="card-3d-shine"></div>
+        <div class="svc-bar"></div>
+        <div class="card-3d-inner">
+          <div class="svc-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>SME Growth Engines</h3>
+          <p>High-conversion platforms built for the Zimbabwean market with local payment support baked in.</p>
+          <ul class="svc-features">
+            <li>EcoCash & Local Payment Integration</li>
+            <li>Inventory Management</li>
+            <li>Customer Analytics</li>
+          </ul>
+        </div>
+      </div>
+      <div class="svc-card card-3d reveal up d3">
+        <div class="card-3d-shine"></div>
+        <div class="svc-bar"></div>
+        <div class="card-3d-inner">
+          <div class="svc-icon"><i class="fas fa-code"></i></div>
+          <h3>Web Design & Apps</h3>
+          <p>From sleek landing pages to full web applications — designed to convert visitors into loyal users.</p>
+          <ul class="svc-features">
+            <li>Custom UI/UX Design</li>
+            <li>Responsive Architecture</li>
+            <li>SEO & Performance Optimisation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STACK ══════════════════════════════════════════════════════════ -->
+<section id="stack" class="section">
+  <div class="wrap">
+    <div class="section-head reveal up">
+      <span class="label">The Tech Stack</span>
+      <h2>World-Class <span class="text-grad">Expertise.</span></h2>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-card card-3d reveal up d1">
+        <div class="card-3d-shine"></div>
+        <div class="card-3d-inner">
+          <h3><i class="fas fa-layer-group"></i> Frontend</h3>
+          <div class="stack-icons">
+            <i class="fab fa-html5" onmouseenter="this.style.color='#E34F26'" onmouseleave="this.style.color=''"></i>
+            <i class="fab fa-css3-alt" onmouseenter="this.style.color='#1572B6'" onmouseleave="this.style.color=''"></i>
+            <i class="fab fa-js" onmouseenter="this.style.color='#F7DF1E'" onmouseleave="this.style.color=''"></i>
+            <i class="fab fa-wordpress" onmouseenter="this.style.color='#21759B'" onmouseleave="this.style.color=''"></i>
+            <i class="fab fa-laravel" onmouseenter="this.style.color='#FF2D20'" onmouseleave="this.style.color=''"></i>
+          </div>
+        </div>
+      </div>
+      <div class="stack-card card-3d reveal up d2">
+        <div class="card-3d-shine"></div>
+        <div class="card-3d-inner">
+          <h3><i class="fas fa-server"></i> Backend</h3>
+          <div class="stack-icons">
+            <i class="fab fa-python" onmouseenter="this.style.color='#3776AB'" onmouseleave="this.style.color=''"></i>
+            <i class="fas fa-fire" onmouseenter="this.style.color='#FFCA28'" onmouseleave="this.style.color=''"></i>
+            <i class="fas fa-database" onmouseenter="this.style.color='#00758F'" onmouseleave="this.style.color=''"></i>
+          </div>
+        </div>
+      </div>
+      <div class="stack-card card-3d reveal up d3">
+        <div class="card-3d-shine"></div>
+        <div class="card-3d-inner">
+          <h3><i class="fas fa-pen-nib"></i> Creative</h3>
+          <div class="stack-icons" style="align-items:center;font-size:1rem;gap:0.5rem;">
+            <span style="font-family:'Geist Mono',monospace;font-size:0.72rem;color:var(--text-muted);transition:color 0.3s;" onmouseenter="this.style.color='var(--text)'" onmouseleave="this.style.color='var(--text-muted)'">Canva</span>
+            <i class="fas fa-palette" style="font-size:1.3rem;" onmouseenter="this.style.color='#FF6B9D'" onmouseleave="this.style.color=''"></i>
+          </div>
+        </div>
+      </div>
+      <div class="stack-card card-3d reveal up d4" style="border-color:rgba(6,182,212,0.22)">
+        <div class="card-3d-shine"></div>
+        <div class="card-3d-inner">
+          <h3><i class="fas fa-brain"></i> AI & Flow</h3>
+          <div class="stack-tags">
+            <span class="stack-tag">GPT-4</span>
+            <span class="stack-tag">Claude</span>
+            <span class="stack-tag">Gemini</span>
+            <span class="stack-tag">n8n</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WORKS ══════════════════════════════════════════════════════════ -->
+<section id="works" class="section">
+  <div class="wrap">
+    <div class="section-head reveal up">
+      <span class="label">Case Studies</span>
+      <h2>Latest <span class="text-grad">Work.</span></h2>
+    </div>
+    <div class="works-grid">
+      <div class="work-card card-3d reveal left d1">
+        <div class="card-3d-shine"></div>
+        <div class="work-img">
+          <img src="images/download (15).jpg" alt="ZimZapp">
+          <div class="work-overlay"><span class="work-overlay-label">View Project →</span></div>
+        </div>
+        <div class="work-info">
+          <div>
+            <h3>ZimZapp</h3>
+            <p>ZIMSEC AI-integrated study partner</p>
+          </div>
+          <div class="work-arrow"><i class="fas fa-arrow-up-right" style="font-size:0.7rem;"></i></div>
+        </div>
+      </div>
+      <div class="work-card card-3d reveal right d2">
+        <div class="card-3d-shine"></div>
+        <div class="work-img">
+          <img src="images/Screenshot 2026-04-28 133558.png" alt="EBBA">
+          <div class="work-overlay"><span class="work-overlay-label">View Project →</span></div>
+        </div>
+        <div class="work-info">
+          <div>
+            <h3>EBBA Website</h3>
+            <p>Empowering youth through storytelling</p>
+          </div>
+          <div class="work-arrow"><i class="fas fa-arrow-up-right" style="font-size:0.7rem;"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING ════════════════════════════════════════════════════════ -->
+<section id="pricing" class="section">
+  <div class="wrap">
+    <div class="section-head reveal up" style="text-align:center">
+      <span class="label">Invest in Growth</span>
+      <h2>Simple, <span class="text-grad">Transparent Pricing.</span></h2>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card card-3d reveal up d1">
+        <div class="card-3d-shine"></div>
+        <div class="pricing-tier">Foundation</div>
+        <div class="pricing-price">$25 <span>/ mo</span></div>
+        <p class="pricing-desc">Perfect for local SMEs taking their first step into the digital space.</p>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> Custom Landing Page</li>
+          <li><i class="fas fa-check"></i> Mobile Responsive</li>
+          <li><i class="fas fa-check"></i> Basic SEO Setup</li>
+          <li><i class="fas fa-check"></i> 1 Month Support</li>
+        </ul>
+        <button class="btn-plan outline">Get Started</button>
+      </div>
+      <div class="pricing-card feat card-3d reveal up d2">
+        <div class="card-3d-shine"></div>
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-tier">Elite Edge</div>
+        <div class="pricing-price">$40 <span>/ mo</span></div>
+        <p class="pricing-desc">Advanced features for growing institutions ready to scale their digital presence.</p>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> Full Website or Portal</li>
+          <li><i class="fas fa-check"></i> Custom Dashboard</li>
+          <li><i class="fas fa-check"></i> 3 Months Support</li>
+          <li><i class="fas fa-check"></i> Performance Analytics</li>
+        </ul>
+        <button class="btn-plan solid">Get Started</button>
+      </div>
+      <div class="pricing-card card-3d reveal up d3">
+        <div class="card-3d-shine"></div>
+        <div class="pricing-tier">Visionary</div>
+        <div class="pricing-price">$50 <span>/ mo</span></div>
+        <p class="pricing-desc">Full enterprise ecosystem with AI integration for ambitious institutions.</p>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> Everything in Elite</li>
+          <li><i class="fas fa-check"></i> AI Chatbot Integration</li>
+          <li><i class="fas fa-check"></i> Full CMS Setup</li>
+          <li><i class="fas fa-check"></i> Ongoing Maintenance</li>
+          <li><i class="fas fa-check"></i> Priority Support</li>
+        </ul>
+        <button class="btn-plan outline">Get Started</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MISSION ════════════════════════════════════════════════════════ -->
+<section id="mission" class="section">
+  <div class="wrap">
+    <div class="mission-wrap">
+      <span class="label reveal up" style="display:block;margin-bottom:1.5rem;">What Drives Us</span>
+      <blockquote class="mission-quote reveal up d1">"Zimbabwe's digital future shouldn't be a luxury."</blockquote>
+      <p class="mission-body reveal up d2">We are driven by the mission to bridge the gap between world-class technology and local accessibility — giving our schools and SMEs the tools they need to lead on a global stage. Not someday. Now.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ════════════════════════════════════════════════════════ -->
+<section id="contact" class="section">
+  <div class="wrap">
+    <div class="contact-wrap">
+      <span class="label reveal up" style="display:block;margin-bottom:1rem;">Ready to Build?</span>
+      <h2 class="reveal up d1">Let's Start a<br><span class="text-grad">Conversation.</span></h2>
+      <p class="reveal up d2">Whether you're a school, an SME, or a founder with an idea — we'd love to hear from you. No jargon, no pressure. Just a real conversation about what's possible.</p>
+      <div class="contact-btns reveal up d3">
+        <a href="mailto:codazw@gmail.com" class="btn btn-primary"><i class="fas fa-envelope" style="font-size:0.8rem;"></i> hello@coda.co.zw</a>
+        <a href="https://wa.me/263787063444" class="btn btn-ghost"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Coda</div>
+        <p class="footer-bio">A production-grade tech agency based in Harare, Zimbabwe. We specialise in AI-integrated web solutions that scale — built with precision, delivered with care.</p>
+        <div class="footer-socials">
+          <a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="fsoc"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="fsoc"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#services">Web Development</a></li>
+          <li><a href="#services">Graphic Design</a></li>
+          <li><a href="#services">SEO & Performance</a></li>
+          <li><a href="#services">Web Hosting</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#founder">Our Story</a></li>
+          <li><a href="#works">Latest Works</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Coda Tech Solutions. All Rights Reserved.</span>
+      <span>Designed with Passion in Harare</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ CHATBOT ════════════════════════════════════════════════════════ -->
+<button id="chat-fab" title="Chat with us"><i class="fas fa-comment-dots"></i></button>
+<div id="chatbox">
+  <div class="chat-head">
+    <div class="chat-avatar"><i class="fas fa-robot"></i></div>
+    <div class="chat-head-text">
+      <h3>Coda Architect</h3>
+      <p>AI · Online Now</p>
+    </div>
+  </div>
+  <div id="chat-msgs"></div>
+  <div class="chat-foot">
+    <input type="text" id="chat-input" placeholder="Ask us anything…">
+    <button id="chat-send"><i class="fas fa-paper-plane" style="font-size:0.72rem;"></i></button>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   THEME SYSTEM
+═══════════════════════════════════════════════════════════════════ */
+const root = document.documentElement;
+const themeToggle = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
+
+function getTheme() { return root.getAttribute('data-theme'); }
+function setTheme(t) {
+  root.setAttribute('data-theme', t);
+  localStorage.setItem('coda-theme', t);
+  themeIcon.className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+// Init from storage or system preference
+const saved = localStorage.getItem('coda-theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+setTheme(saved || (prefersDark ? 'dark' : 'light'));
+
+themeToggle.addEventListener('click', () => {
+  setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+});
+
+/* ════════════════════════════════════════════════════════════════════
+   NAV SCROLL
+═══════════════════════════════════════════════════════════════════ */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60), { passive: true });
+
+/* ════════════════════════════════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════════════════════════════ */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      ro.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+/* ════════════════════════════════════════════════════════════════════
+   3D CARD TILT
+═══════════════════════════════════════════════════════════════════ */
+function init3DCards() {
+  document.querySelectorAll('.card-3d').forEach(card => {
+    let raf;
+    card.addEventListener('mousemove', e => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - 0.5; // -0.5 to 0.5
+        const y = (e.clientY - r.top)  / r.height - 0.5;
+        const rotY =  x * 14; // max 14deg
+        const rotX = -y * 10; // max 10deg
+        card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02,1.02,1.02)`;
+        card.style.boxShadow = `${-rotY * 1.5}px ${rotX * 1.5}px 40px rgba(0,0,0,0.25), 0 0 0 1px rgba(6,182,212,0.15)`;
+        // Move shine to follow cursor
+        const shine = card.querySelector('.card-3d-shine');
+        if (shine) {
+          const px = (e.clientX - r.left) / r.width  * 100;
+          const py = (e.clientY - r.top)  / r.height * 100;
+          shine.style.background = `radial-gradient(circle at ${px}% ${py}%, rgba(255,255,255,0.1) 0%, transparent 60%)`;
+        }
+      });
+    });
+    card.addEventListener('mouseleave', () => {
+      cancelAnimationFrame(raf);
+      card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+      card.style.boxShadow = '';
+    });
+  });
+}
+init3DCards();
+
+/* ════════════════════════════════════════════════════════════════════
+   FOUNDER FRAME 3D PARALLAX
+═══════════════════════════════════════════════════════════════════ */
+const founderFrame = document.getElementById('founder-frame');
+if (founderFrame) {
+  founderFrame.addEventListener('mousemove', e => {
+    const r = founderFrame.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width  - 0.5;
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    founderFrame.style.transform = `perspective(800px) rotateX(${-y * 8}deg) rotateY(${x * 10}deg) scale3d(1.02,1.02,1.02)`;
+    founderFrame.style.boxShadow = `${-x * 20}px ${-y * 20}px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(6,182,212,0.2)`;
+  });
+  founderFrame.addEventListener('mouseleave', () => {
+    founderFrame.style.transform = '';
+    founderFrame.style.boxShadow = '';
+  });
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   HERO PARALLAX
+═══════════════════════════════════════════════════════════════════ */
+const heroPhoto = document.getElementById('hero-video');
+window.addEventListener('scroll', () => {
+  if (!heroPhoto) return;
+  const y = scrollY * 0.25;
+  heroPhoto.style.transform = `scale(1.05) translateY(${y}px)`;
+}, { passive: true });
+
+/* ════════════════════════════════════════════════════════════════════
+   CHATBOT
+═══════════════════════════════════════════════════════════════════ */
+const fab  = document.getElementById('chat-fab');
+const box  = document.getElementById('chatbox');
+const msgs = document.getElementById('chat-msgs');
+const inp  = document.getElementById('chat-input');
+
+fab.addEventListener('click', () => {
+  box.classList.toggle('open');
+  if (box.classList.contains('open') && !msgs.children.length) {
+    addMsg('ai', "Hey! 👋 I'm Coda's AI consultant. Ask me about our services, pricing, or how we can help your school or business.");
+  }
+});
+
+function addMsg(role, text) {
+  const d = document.createElement('div');
+  d.className = `cmsg ${role}`;
+  d.innerHTML = `<span class="csender">${role === 'ai' ? 'Coda AI' : 'You'}</span><div class="cbubble">${text}</div>`;
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function reply(msg) {
+  const m = msg.toLowerCase();
+  if (m.match(/price|cost|plan|how much/))           return "Our plans start from $25/mo — Foundation for SMEs, Elite Edge ($40) for growing institutions, and Visionary ($50) for full AI integration. Which sounds right for you?";
+  if (m.match(/school|institution|education|portal/)) return "We build school portals with parent-teacher hubs, LMS integrations, and performance dashboards. Want to talk through what your institution needs?";
+  if (m.match(/sme|business|shop|ecommerce|store/))  return "For SMEs we build high-conversion sites with EcoCash and local payment integration, inventory tools, and analytics. Where are you in your journey?";
+  if (m.match(/timeline|how long|when|turnaround/))  return "Most projects go live within 2–4 weeks. Complex portals can take 6–8 weeks. We always give you a clear timeline upfront — no surprises.";
+  if (m.match(/contact|talk|call|meet|reach/))       return "Let's connect! Email us at hello@coda.co.zw or use the WhatsApp button in the contact section. We're based in Harare and respond fast.";
+  if (m.match(/who|founder|tine|jera/))              return "Coda was founded by Tinevimbonashe Vitalis Jera — a digital architect on a mission to make world-class web solutions accessible across Zimbabwe.";
+  return "Great question. Let's dig into that — should we schedule a quick discovery call so we can give you a proper answer?";
+}
+
+function send() {
+  const v = inp.value.trim();
+  if (!v) return;
+  addMsg('user', v);
+  inp.value = '';
+  setTimeout(() => addMsg('ai', reply(v)), 650);
+}
+
+document.getElementById('chat-send').addEventListener('click', send);
+inp.addEventListener('keydown', e => e.key === 'Enter' && send());
+</script>
+</body>
+</html>
